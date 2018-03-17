@@ -1,8 +1,6 @@
 module Logging where
 
-
-import Data.DateTime
-
+import Data.Time.Clock
 
 data LogLevel = Debug | Info | Warning | Error | Fatal
               deriving (Show, Read, Eq, Ord, Enum, Bounded)
@@ -17,7 +15,7 @@ data EventSource = Internal { iesComponent   :: String
                  -- TODO: remove Ord here after implementing Ord for LogMessage
 
 data LogMessage = LogMessage
-                { lmTimestamp  :: DateTime
+                { lmTimestamp  :: UTCTime
                 , lmSource     :: EventSource
                 , lmMessage    :: String
                 , lmHiddenFlag :: Bool
@@ -31,11 +29,13 @@ data EventSourceMatcher = Exact EventSource
                         | AnyInternal
                         | AnyExternal
                         | Any
+                        | MatchAny [EventSourceMatcher]
+                        | MatchAll [EventSourceMatcher]
                         deriving (Show, Read, Eq)
 
 -- | Specialized log list filter
 -- TODO: implement filter function for logs with matchers, log level and hidden flag
-logFilter :: [EventSourceMatcher] -> LogLevel -> Bool -> [LogMessage] -> [LogMessage]
+logFilter :: EventSourceMatcher -> LogLevel -> Bool -> [LogMessage] -> [LogMessage]
 logFilter = undefined
 
 -- | Change log level operator
@@ -48,6 +48,7 @@ logFilter = undefined
 (@@) :: EventSource -> EventSource -> EventSource
 (@@) = undefined
 
+infixr 8 ~~
 -- | Matching EventSource with EventSourceMatcher operator
 -- TODO: implement matching
 (~~) :: EventSourceMatcher -> EventSource -> Bool

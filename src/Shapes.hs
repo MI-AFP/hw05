@@ -12,7 +12,6 @@ data Triangle = EquilateralTriangle { etSide :: Double }
 
 data Quadrilateral = Square { sqSide :: Double}
                    | Rectangle { reSideA :: Double, reSideB :: Double }
-                   | Trapezoid { trBaseA :: Double, trBaseB :: Double, trHeight :: Double}
                    deriving (Show, Read, Eq)
 
 
@@ -20,4 +19,3 @@ data Quadrilateral = Square { sqSide :: Double}
 circumference = undefined
 area = undefined
 -- TODO: create appropriate typeclass and write instances for the types to compute circumference and area
-
