@@ -1,4 +1,4 @@
-module Logging where
+module Data.Logging where
 
 import Data.Time.Clock
 

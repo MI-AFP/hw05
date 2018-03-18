@@ -2,7 +2,7 @@ module ShapesSpec (spec) where
 
 import Test.Hspec
 
-import Shapes
+import Data.Shapes
 
 approxMatch a b = abs (a - b) < 0.000001
 

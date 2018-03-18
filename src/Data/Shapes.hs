@@ -1,4 +1,4 @@
-module Shapes where
+module Data.Shapes where
 
 -- DO NOT CHANGE THE TYPE DEFINITIONS
 

@@ -3,7 +3,7 @@ module LoggingSpec (spec) where
 import Test.Hspec
 import Data.Time.Clock
 
-import Logging
+import Data.Logging
 
 
 timestamp1 = read "2017-11-19 18:28:r52.607875 UTC" :: UTCTime

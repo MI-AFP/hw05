@@ -2,7 +2,7 @@ module StringNumberSpec (spec) where
 
 import Test.Hspec
 
-import StringNumber
+import Data.StringNumber
 
 
 spec :: Spec
