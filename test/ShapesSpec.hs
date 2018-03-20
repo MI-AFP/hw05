@@ -9,6 +9,11 @@ approxMatch a b = abs (a - b) < 0.000001
 spec :: Spec
 spec = do
     describe "Circle" $ do
+      it "has defined validity check" $ do
+        valid (Circle 10) `shouldBe` True
+        valid (Circle 0.01) `shouldBe` True
+        valid (Circle 0) `shouldBe` False
+        valid (Circle (-2)) `shouldBe` False
       it "has defined area" $ do
         area (Circle 10) `shouldBe` 100 * pi
         area (Circle  1) `shouldBe`       pi
@@ -22,6 +27,11 @@ spec = do
 
     describe "Triangle" $ do
       describe "EquilateralTriangle" $ do
+        it "has defined validity check" $ do
+          valid (EquilateralTriangle 10) `shouldBe` True
+          valid (EquilateralTriangle 0.01) `shouldBe` True
+          valid (EquilateralTriangle 0) `shouldBe` False
+          valid (EquilateralTriangle (-2)) `shouldBe` False
         it "has defined area" $ do
           approxMatch (area (EquilateralTriangle 10)) 43.30127018922 `shouldBe` True
           approxMatch (area (EquilateralTriangle  2))  1.73205080757 `shouldBe` True
@@ -33,6 +43,12 @@ spec = do
           circumference (EquilateralTriangle  7) `shouldBe` 21
           circumference (EquilateralTriangle  0) `shouldBe`  0
       describe "IsoscelesTriangle" $ do
+        it "has defined validity check" $ do
+          valid (IsoscelesTriangle 10 15) `shouldBe` True
+          valid (IsoscelesTriangle 25 10) `shouldBe` False
+          valid (IsoscelesTriangle 0.01 2) `shouldBe` True
+          valid (IsoscelesTriangle 0 3) `shouldBe` False
+          valid (IsoscelesTriangle 5 (-2)) `shouldBe` False
         it "has defined area" $ do
           approxMatch (area (IsoscelesTriangle 10 12)) 54.5435605731 `shouldBe` True
           approxMatch (area (IsoscelesTriangle  1  3))  1.4790199458 `shouldBe` True
@@ -46,23 +62,37 @@ spec = do
           circumference (IsoscelesTriangle  0  5) `shouldBe`  0
           circumference (IsoscelesTriangle 10  0) `shouldBe`  0
       describe "ScaleneTriangle" $ do
+        it "has defined validity check" $ do
+          valid (ScaleneTriangle 10 15 7) `shouldBe` True
+          valid (ScaleneTriangle 10 25 5) `shouldBe` False
+          valid (ScaleneTriangle 21 16 5) `shouldBe` False
+          valid (ScaleneTriangle 2 16 22) `shouldBe` False
+          valid (ScaleneTriangle 0.5 2 2.3) `shouldBe` True
+          valid (ScaleneTriangle 0 3 2) `shouldBe` False
+          valid (ScaleneTriangle 5 3 0) `shouldBe` False
+          valid (ScaleneTriangle 5 (-2) 1) `shouldBe` False
         it "has defined area" $ do
           approxMatch (area (ScaleneTriangle 10 12 7)) 34.9776714491 `shouldBe` True
           approxMatch (area (ScaleneTriangle  5  7 4))  9.7979589711 `shouldBe` True
           approxMatch (area (ScaleneTriangle  5  4 3))  6.0          `shouldBe` True
           area (ScaleneTriangle  0  0 2) `shouldBe` 0
           area (ScaleneTriangle  3 12 4) `shouldBe` 0
-          area (ScaleneTriangle 10 12 4) `shouldBe` 0
+          area (ScaleneTriangle 10 15 4) `shouldBe` 0
         it "has defined circumference" $ do
           circumference (ScaleneTriangle 10 12 7) `shouldBe` 29
           circumference (ScaleneTriangle 5 7 4) `shouldBe` 16
           circumference (ScaleneTriangle 5 4 3) `shouldBe` 12
           circumference (ScaleneTriangle 0 0 2) `shouldBe` 0
           circumference (ScaleneTriangle 3 12 4) `shouldBe` 0
-          circumference (ScaleneTriangle 10 12 4) `shouldBe` 0
+          circumference (ScaleneTriangle 10 15 4) `shouldBe` 0
 
     describe "Quadrilateral" $ do
       describe "Square" $ do
+        it "has defined validity check" $ do
+          valid (Square 10) `shouldBe` True
+          valid (Square 0.01) `shouldBe` True
+          valid (Square 0) `shouldBe` False
+          valid (Square (-2)) `shouldBe` False
         it "has defined area" $ do
           area (Square 10) `shouldBe` 100
           area (Square 1) `shouldBe` 1
@@ -74,6 +104,11 @@ spec = do
           circumference (Square 7) `shouldBe` 28
           circumference (Square 0) `shouldBe` 0
       describe "Rectangle" $ do
+        it "has defined validity check" $ do
+          valid (Rectangle 10 5) `shouldBe` True
+          valid (Rectangle 0.01 0.15) `shouldBe` True
+          valid (Rectangle 0 5) `shouldBe` False
+          valid (Rectangle 5 (-2)) `shouldBe` False
         it "has defined area" $ do
           area (Rectangle 10 5) `shouldBe` 50
           area (Rectangle 1 7) `shouldBe` 7

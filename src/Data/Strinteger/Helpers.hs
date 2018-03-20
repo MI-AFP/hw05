@@ -1,9 +1,11 @@
-module Data.StringNumber.Helpers where
+module Data.Strinteger.Helpers where
 
 import Data.Map as M
 
+zero = "zero" -- zero is very special value
+
 units :: [(Integer, String)]
-units = [ ( 0, "zero")
+units = [ ( 0, zero)
         , ( 1, "one")
         , ( 2, "two")
         , ( 3, "three")
@@ -14,7 +16,7 @@ units = [ ( 0, "zero")
         , ( 8, "eight")
         , ( 9, "nine")
         , (10, "ten")
-        , (11, "eleven") -- Watch: https://www.youtube.com/watch?v=NMS2VnDveP8
+        , (11, "eleven") -- if bored, watch: https://www.youtube.com/watch?v=NMS2VnDveP8
         , (12, "twelve")
         , (13, "thirteen")
         , (14, "fourteen")
@@ -38,9 +40,7 @@ tens = [ (1, "ten")
        ]
 
 scales :: [(Integer, String)]
-scales = [ (  0, "one")
-         , (  1, "ten")
-         , (  2, "hundred")
+scales = [ (  2, "hundred")
          , (  3, "thousand")
          , (  6, "million")
          , (  9, "billion")
@@ -62,12 +62,11 @@ scales = [ (  0, "one")
          , ( 57, "octodecillion")
          , ( 60, "novemdecillion")
          , ( 63, "vigintillion")
-         , (100, "googol")
-         , (303, "centillion")
          ]
 
+highestPossible = 10^64 - 1
 
--- | Map where key is numword part and value is the tuple (value, scale)
+-- | Map where key is numword part and value is the tuple (scale, value)
 word2numMap :: M.Map String (Integer, Integer)
 word2numMap = unions [numunits, numtens, numscales]
              where
@@ -75,9 +74,11 @@ word2numMap = unions [numunits, numtens, numscales]
                numtens   = M.fromList [(str, (10, value)) | (value, str) <- tens]
                numscales = M.fromList [(str, (10^scale, 0)) | (scale, str) <- scales]
 
+-- | Translate word to (scale, value) tuple if defined
 word2num :: String -> Maybe (Integer, Integer)
 word2num k = M.lookup k word2numMap
 
+-- | Map where key is (scale, value) tuple and numword is the value (inverse of word2numMap)
 num2wordMap :: M.Map (Integer, Integer) String
 num2wordMap = unions [wordunits, wordtens, wordscales]
              where
@@ -85,12 +86,12 @@ num2wordMap = unions [wordunits, wordtens, wordscales]
                wordtens   = M.fromList [((10, value), str) | (value, str) <- tens]
                wordscales = M.fromList [((10^scale, 0), str) | (scale, str) <- scales]
 
+-- | Translate scale and value to word if defined
 num2word :: Integer -> Integer -> Maybe String
 num2word scale value = M.lookup (scale, value) num2wordMap
 
-
-separator = " "
-separatorTens = "-"
+separator = ' ' -- used between separate numerals
+separatorTens = '-' -- used to connect tens and units: sixty-six
 negativePrefix = "minus"
-messageIllegalStringNumber = "Illegal StringNumber: "
-messageUnconvertableInteger = "Uncovertable Integer: "
+messageBadNumeral numeral = "Illegal English numeral: " ++ "'" ++ numeral ++ "'"
+messageBadInteger integer = "Uncovertable Integer: " ++ show integer

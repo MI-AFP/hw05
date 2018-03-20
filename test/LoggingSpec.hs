@@ -6,9 +6,9 @@ import Data.Time.Clock
 import Data.Logging
 
 
-timestamp1 = read "2017-11-19 18:28:r52.607875 UTC" :: UTCTime
-timestamp2 = read "2017-11-20 18:28:r52.607875 UTC" :: UTCTime
-timestamp3 = read "2017-11-21 18:28:r52.607875 UTC" :: UTCTime
+timestamp1 = read "2017-11-19 18:28:52.607875 UTC" :: UTCTime
+timestamp2 = read "2017-11-20 18:28:52.607875 UTC" :: UTCTime
+timestamp3 = read "2017-11-21 18:28:52.607875 UTC" :: UTCTime
 
 esInternal1 = Internal { iesComponent = "comp1", iesCallID = "com.call.id26218" }
 esInternal2 = Internal { iesComponent = "comp2", iesCallID = "com.call.id26218" }
@@ -33,7 +33,7 @@ spec = do
         it "shows log message with various event sources" $ do
           show (defaultLogMsg { lmSource = esInternal1 }) `shouldBe` "[Warning] Internal[comp1]: Message is boring"
           show (defaultLogMsg { lmSource = esExternal  }) `shouldBe` "[Warning] External[//some/uri]: Message is boring"
-          show (defaultLogMsg { lmSource = esCombined  }) `shouldBe` "[Warning] Combined[comp1,//some/uri]: Message is boring"
+          show (defaultLogMsg { lmSource = esCombined  }) `shouldBe` "[Warning] Combined[Internal[comp1],External[//some/uri]]: Message is boring"
         it "shows log message with various messages" $ do
           show (defaultLogMsg { lmMessage = "Stack overflow" }) `shouldBe` "[Warning] Unknown: Stack overflow"
           show (defaultLogMsg { lmMessage = "Null pointer exception" }) `shouldBe` "[Warning] Unknown: Null pointer exception"
@@ -50,8 +50,8 @@ spec = do
           (defaultLogMsg < (defaultLogMsg { lmLogLevel = Fatal, lmTimestamp = timestamp1 })) `shouldBe` True
           (defaultLogMsg < (defaultLogMsg { lmLogLevel = Fatal, lmTimestamp = timestamp3 })) `shouldBe` True
         it "has correct compare (timestamp)" $ do
-          (defaultLogMsg < (defaultLogMsg { lmTimestamp = timestamp1 })) `shouldBe` False
-          (defaultLogMsg < (defaultLogMsg { lmTimestamp = timestamp3 })) `shouldBe` True
+          (defaultLogMsg < (defaultLogMsg { lmMessage = "Zzzzz", lmTimestamp = timestamp1 })) `shouldBe` False
+          (defaultLogMsg < (defaultLogMsg { lmMessage = "Aaargh", lmTimestamp = timestamp3 })) `shouldBe` True
     describe "operators" $ do
       describe "$=" $
         it "changes log level correctly" $ do
@@ -74,7 +74,7 @@ spec = do
           (Exact esExternal  ~~ esExternal)  `shouldBe` True
           (Exact esInternal1 ~~ esExternal)  `shouldBe` False
           (Exact esCombined  ~~ esCombined)  `shouldBe` True
-          (Exact esCombined  ~~ Combined [esExternal,esInternal2]) `shouldBe` True
+          (Exact esCombined  ~~ Combined [esExternal,esInternal2]) `shouldBe` False
           (Exact Unknown     ~~ Combined [esExternal,esInternal2]) `shouldBe` False
           (Exact esExternal  ~~ Combined [esExternal,esInternal2]) `shouldBe` False
           (Exact Unknown  ~~ Unknown) `shouldBe` True
@@ -86,16 +86,6 @@ spec = do
           (With esExternal  ~~ Combined [esExternal,esInternal2]) `shouldBe` True
           (With esInternal2 ~~ Combined [esExternal,esInternal2]) `shouldBe` True
           (With esInternal1 ~~ Combined [esExternal,esInternal2]) `shouldBe` False
-        it "matches with AllCombined" $ do
-          (AllCombined [esInternal1] ~~ esInternal1) `shouldBe` False
-          (AllCombined [esExternal]  ~~ esExternal)  `shouldBe` False
-          (AllCombined [esCombined]  ~~ esCombined)  `shouldBe` False
-          (AllCombined [Unknown]     ~~ Unknown)      `shouldBe` False
-          (AllCombined [esExternal,esInternal2]  ~~ Combined [esExternal,esInternal2]) `shouldBe` True
-          (AllCombined [esExternal,esInternal2]  ~~ Combined [esExternal,esInternal2,Unknown]) `shouldBe` True
-          (AllCombined [esExternal,esInternal2,Unknown]  ~~ Combined [esExternal,esInternal2]) `shouldBe` True
-          (AllCombined [esExternal]  ~~ Combined [esExternal,esInternal2]) `shouldBe` False
-          (AllCombined [esExternal,esInternal1]  ~~ Combined [esExternal,esInternal2]) `shouldBe` False
         it "matches with AnyInternal" $ do
           (AnyInternal ~~ esInternal1) `shouldBe` True
           (AnyInternal ~~ esExternal)  `shouldBe` False
@@ -120,7 +110,7 @@ spec = do
           (MatchAny [AnyExternal,Exact esInternal1] ~~ esExternal) `shouldBe` True
           (MatchAny [AnyExternal,Exact esInternal1] ~~ Unknown) `shouldBe` False
           (MatchAny [AnyExternal,Exact esInternal1] ~~ esCombined) `shouldBe` True
-          (MatchAny [AnyExternal,Exact esInternal1] ~~ Combined [esInternal2,Unknown]) `shouldBe` True
+          (MatchAny [AnyExternal,Exact esInternal1] ~~ Combined [esInternal2,Unknown]) `shouldBe` False
         it "matches with MatchAll" $ do
           (MatchAll [AnyExternal,Exact esInternal1] ~~ esInternal1) `shouldBe` False
           (MatchAll [AnyExternal,Exact esInternal1] ~~ esInternal2) `shouldBe` False
