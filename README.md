@@ -8,10 +8,7 @@ Homework to practice advanced work with functions and basics of typeclasses
    * First, implement instances of  `Validable` for each shape type with function `valid` that says if given shape is valid (its attributes are acceptable, i.e., not negative, forming a triangle).
    * Then, design on your own the `Shape2D` typeclass which is a subclass of `Validable`, define `area` and `circumference` (remove dummy ones). During the design consider using `valid` - for invalid shape, both functions should return zero.
    * Finally, implement instances of `Shape2D` for each shape type.
-2. Your second task is to implement *TODOs* in `Data.Logging`.
-   * Write custom instances of `Show` and `Ord` for type `LogMessage` according to given test specification.
-   * Implement three operators `$=` (change log level), `@@` (combine event sources), and `~~` (event source matching).
-   * Use the `~~` operator and one powerful but simple higher-order function to implement `logFilter`. **Pointfree style is required!**
+
 3. The final (and also the most interesting) task is to implement functions and instances for next data type to represent integers - the `Strinteger` (from `Data.Strinteger`)! It is a representation of an integer as English numeral string, for example, `125` is `"one hundred twenty-five"`.
    * The biggest challenge is to implement functions `integer2EngNumeral` and `engNumeral2Integer` (related with `pack` and `unpack`). Don't worry, no painful copy-pasting is waiting for you. All English numerals that are needed are already prepared in `Data.Strinteger.Helpers`. Take a look and feel free to edit as you need. Notice that `Strinteger` is an instance of `Bounded`. (Look at hints if getting stuck with those two functions.)
    * After having `pack` and `unpack` working, it will be very easy to make instances of `Eq`, `Ord`, `Num`, `Enum`, and `Integral` (*you might need some more due to dependencies*) for the `Strinteger`.

@@ -39,3 +39,4 @@ tests:
     dependencies:
     - hw05
     - hspec
+    - QuickCheck
