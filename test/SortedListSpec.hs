@@ -2,7 +2,7 @@ module SortedListSpec (spec) where
 
 import Data.Semigroup
 import Test.Hspec
-import Test.QuickCheck
+import Test.QuickCheck hiding (SortedList(..))
 
 import Data.SortedList
 
