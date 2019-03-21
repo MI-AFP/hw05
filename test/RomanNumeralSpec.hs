@@ -74,37 +74,37 @@ spec = do
 
     describe "RomanNumeral instances" $ do
       it "is Ord: compares numbers in strings" $ do
-        (RomanNumeral "" > RomanNumeral "") `shouldBe` True
-        (RomanNumeral "" > RomanNumeral "") `shouldBe` False
-        (RomanNumeral "" <= RomanNumeral "") `shouldBe` False
+        (RomanNumeral "CXX" > RomanNumeral "CII") `shouldBe` True
+        (RomanNumeral "MCCLIV" > RomanNumeral "MMMMDXXI") `shouldBe` False
+        (RomanNumeral "XLV" <= RomanNumeral "-I") `shouldBe` False
       it "is Num: adds numbers in strings" $ do
-        (RomanNumeral "" + RomanNumeral "") `shouldBe` RomanNumeral ""
-        (RomanNumeral "" + RomanNumeral "") `shouldBe` RomanNumeral ""
-        (RomanNumeral "" + RomanNumeral "") `shouldBe` RomanNumeral ""
+        (RomanNumeral "V" + RomanNumeral "VI") `shouldBe` RomanNumeral "XI"
+        (RomanNumeral "CXXIV" + RomanNumeral "LXXV") `shouldBe` RomanNumeral "CXCIX"
+        (RomanNumeral "MCCXL" + RomanNumeral "-MM") `shouldBe` RomanNumeral "DCCLX"
       it "is Num: subtract numbers in strings" $ do
-        (RomanNumeral "" - RomanNumeral "") `shouldBe` RomanNumeral ""
-        (RomanNumeral "" - RomanNumeral "") `shouldBe` RomanNumeral ""
-        (RomanNumeral "" - RomanNumeral "") `shouldBe` RomanNumeral ""
+        (RomanNumeral "MCCXL" - RomanNumeral "MM") `shouldBe` RomanNumeral "DCCLX"
+        (RomanNumeral "" - RomanNumeral "VII") `shouldBe` RomanNumeral "VII"
+        (RomanNumeral "CCCLVIII" - RomanNumeral "CLXXV") `shouldBe` RomanNumeral "CLXXXIII"
       it "is Num: multiplies numbers in strings" $ do
-        (RomanNumeral "" * RomanNumeral "") `shouldBe` RomanNumeral ""
-        (RomanNumeral "" * RomanNumeral "") `shouldBe` RomanNumeral ""
-        (RomanNumeral "" * RomanNumeral "") `shouldBe` RomanNumeral ""
+        (RomanNumeral "V" * RomanNumeral "VII") `shouldBe` RomanNumeral "XXXV"
+        (RomanNumeral "CXXIV" * RomanNumeral "XVII") `shouldBe` RomanNumeral "MMCVIII"
+        (RomanNumeral "-X" * RomanNumeral "VII") `shouldBe` RomanNumeral "-LXX"
       it "is Num: has defined absolute value" $ do
+        abs (RomanNumeral "VI") `shouldBe` RomanNumeral "VI"
         abs (RomanNumeral "") `shouldBe` RomanNumeral ""
-        abs (RomanNumeral "") `shouldBe` RomanNumeral ""
-        abs (RomanNumeral "") `shouldBe` RomanNumeral ""
-        abs (RomanNumeral "") `shouldBe` RomanNumeral ""
+        abs (RomanNumeral "-MMMCCLIV") `shouldBe` RomanNumeral "MMMCCLIV"
+        abs (RomanNumeral "-XV") `shouldBe` RomanNumeral "XV"
       it "is Num: has defined signum" $ do
+        signum (RomanNumeral "MMDCLX") `shouldBe` RomanNumeral "I"
         signum (RomanNumeral "") `shouldBe` RomanNumeral ""
-        signum (RomanNumeral "") `shouldBe` RomanNumeral ""
-        signum (RomanNumeral "") `shouldBe` RomanNumeral ""
+        signum (RomanNumeral "-XV") `shouldBe` RomanNumeral "-I"
       it "is Num: has defined negate" $ do
         negate (RomanNumeral "") `shouldBe` RomanNumeral ""
-        negate (RomanNumeral "") `shouldBe` RomanNumeral ""
-        negate (RomanNumeral "") `shouldBe` RomanNumeral ""
+        negate (RomanNumeral "CLIV") `shouldBe` RomanNumeral "-CLIV"
+        negate (RomanNumeral "-XV") `shouldBe` RomanNumeral "XV"
       it "is Num: has defined fromInteger (from numeric literal)" $ do
-        (1 :: RomanNumeral) `shouldBe` RomanNumeral ""
-        ((-1) :: RomanNumeral) `shouldBe` RomanNumeral ""
+        (1258 :: RomanNumeral) `shouldBe` RomanNumeral "MCCLVIII"
+        ((-1) :: RomanNumeral) `shouldBe` RomanNumeral "-I"
         (0 :: RomanNumeral) `shouldBe` RomanNumeral ""
       it "is Integral: can compute quotient and remainder" $ do
         (RomanNumeral "" `quotRem` RomanNumeral "") `shouldBe` (RomanNumeral "", RomanNumeral "")
@@ -112,20 +112,19 @@ spec = do
         (RomanNumeral "" `quotRem` RomanNumeral "") `shouldBe` (RomanNumeral "", RomanNumeral "")
         (RomanNumeral "" `quotRem` RomanNumeral "") `shouldBe` (RomanNumeral "", RomanNumeral "")
       it "is Integral: has defined toInteger" $ do
-        toInteger (RomanNumeral "") `shouldBe` 75412
-        toInteger (RomanNumeral "") `shouldBe` (-124500)
-        toInteger (RomanNumeral "") `shouldBe` 721011
+        toInteger (RomanNumeral "CCLVI") `shouldBe` 256
+        toInteger (RomanNumeral "") `shouldBe` 0
+        toInteger (RomanNumeral "-DCCLXXXV") `shouldBe` 785
       it "is Integral: automatically gets `div` and `mod`" $ do
-        (RomanNumeral "" `div` RomanNumeral "") `shouldBe` RomanNumeral ""
-        (RomanNumeral "" `div` RomanNumeral "") `shouldBe` RomanNumeral ""
-        (RomanNumeral "" `mod` RomanNumeral "") `shouldBe` RomanNumeral ""
-        (RomanNumeral "" `mod` RomanNumeral "") `shouldBe` RomanNumeral ""
+        (RomanNumeral "XVII" `div` RomanNumeral "III") `shouldBe` RomanNumeral "V"
+        (RomanNumeral "V" `div` RomanNumeral "II") `shouldBe` RomanNumeral "II"
+        (RomanNumeral "XVII" `mod` RomanNumeral "III") `shouldBe` RomanNumeral "II"
+        (RomanNumeral "VI" `mod` RomanNumeral "II") `shouldBe` RomanNumeral ""
       it "is Enum: can use succ, pred, dot-dot syntactic sugar" $ do
-        succ (RomanNumeral "") `shouldBe` RomanNumeral ""
-        pred (RomanNumeral "") `shouldBe` RomanNumeral ""
-        [(RomanNumeral "")..(RomanNumeral "")] `shouldBe` [RomanNumeral "",RomanNumeral "",RomanNumeral "",RomanNumeral "",RomanNumeral "",RomanNumeral "",RomanNumeral "",RomanNumeral ""]
-        [(RomanNumeral ""),(RomanNumeral "")..(RomanNumeral "")] `shouldBe` [RomanNumeral "",RomanNumeral "",RomanNumeral "",RomanNumeral "",RomanNumeral ""]
-        take 10 [(RomanNumeral "")..] `shouldBe` [RomanNumeral "",RomanNumeral "",RomanNumeral "",RomanNumeral "",RomanNumeral "",RomanNumeral "",RomanNumeral "",RomanNumeral "",RomanNumeral "",RomanNumeral ""]
+        succ (RomanNumeral "X") `shouldBe` RomanNumeral "XI"
+        pred (RomanNumeral "CCL") `shouldBe` RomanNumeral "CCXLIX"
+        [(RomanNumeral "I")..(RomanNumeral "V")] `shouldBe` [RomanNumeral "I",RomanNumeral "II",RomanNumeral "III",RomanNumeral "IV",RomanNumeral "V"]
+        [(RomanNumeral "V"),(RomanNumeral "X")..(RomanNumeral "XXX")] `shouldBe` [RomanNumeral "V",RomanNumeral "X",RomanNumeral "XV",RomanNumeral "XX",RomanNumeral "XXV",RomanNumeral "XXX"]
       it "is Bounded: has maxBound and minBound" $ do
         (minBound :: RomanNumeral) `shouldBe` RomanNumeral "-MMMMCMXCIX"
         (maxBound :: RomanNumeral) `shouldBe` RomanNumeral "MMMMCMXCIX"
