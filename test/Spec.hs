@@ -1,14 +1,14 @@
 import Test.Hspec
 
-import qualified LoggingSpec
 import qualified ShapesSpec
-import qualified StrintegerSpec
+import qualified SortedListSpec
+import qualified RomanNumeralSpec
 
 main :: IO ()
 main = hspec spec
 
 spec :: Spec
 spec = do
-  describe "Logging"      LoggingSpec.spec
   describe "Shapes"       ShapesSpec.spec
-  describe "Strinteger"   StrintegerSpec.spec
+  describe "SortedList"   SortedListSpec.spec
+  describe "RomanNumeral" RomanNumeralSpec.spec
