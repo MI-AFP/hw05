@@ -80,10 +80,10 @@ spec = do
       it "is Num: adds numbers in strings" $ do
         (RomanNumeral "V" + RomanNumeral "VI") `shouldBe` RomanNumeral "XI"
         (RomanNumeral "CXXIV" + RomanNumeral "LXXV") `shouldBe` RomanNumeral "CXCIX"
-        (RomanNumeral "MCCXL" + RomanNumeral "-MM") `shouldBe` RomanNumeral "DCCLX"
+        (RomanNumeral "MCCXL" + RomanNumeral "-MM") `shouldBe` RomanNumeral "-DCCLX"
       it "is Num: subtract numbers in strings" $ do
-        (RomanNumeral "MCCXL" - RomanNumeral "MM") `shouldBe` RomanNumeral "DCCLX"
-        (RomanNumeral "" - RomanNumeral "VII") `shouldBe` RomanNumeral "VII"
+        (RomanNumeral "MCCXL" - RomanNumeral "MM") `shouldBe` RomanNumeral "-DCCLX"
+        (RomanNumeral "" - RomanNumeral "-VII") `shouldBe` RomanNumeral "VII"
         (RomanNumeral "CCCLVIII" - RomanNumeral "CLXXV") `shouldBe` RomanNumeral "CLXXXIII"
       it "is Num: multiplies numbers in strings" $ do
         (RomanNumeral "V" * RomanNumeral "VII") `shouldBe` RomanNumeral "XXXV"
