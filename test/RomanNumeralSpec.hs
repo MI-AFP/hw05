@@ -44,7 +44,7 @@ spec = do
         unpack (RomanNumeral "X") `shouldBe` 10
         unpack (RomanNumeral "L") `shouldBe` 50
         unpack (RomanNumeral "C") `shouldBe` 100
-        unpack (RomanNumeral "D") `shouldBe` 100
+        unpack (RomanNumeral "D") `shouldBe` 500
         unpack (RomanNumeral "M") `shouldBe` 1000
       it "translates non-trivial numbers" $ do
         unpack (RomanNumeral "XXIV") `shouldBe` 24
