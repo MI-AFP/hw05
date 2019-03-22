@@ -55,12 +55,12 @@ spec = do
         unpack (RomanNumeral "MMCDLXX") `shouldBe` 2470
       it "translates negative numbers" $ do
         unpack (RomanNumeral "-LXXXVIII") `shouldBe` (-88)
-        unpack (RomanNumeral "-CCXV") `shouldBe` 215
+        unpack (RomanNumeral "-CCXV") `shouldBe` (-215)
         unpack (RomanNumeral "-MXLVII") `shouldBe` (-1047)
         unpack (RomanNumeral "-MMMCDLI") `shouldBe` (-3451)
         unpack (RomanNumeral "-MMMMDCCCXLIX") `shouldBe` (-4849)
       it "cannot translate large numbers" $ do
-        evaluate (unpack (RomanNumeral "")) `shouldThrow` errorCall "Illegal Roman Numeral: ''"
+        evaluate (unpack (RomanNumeral "-MMMMMMLVII")) `shouldThrow` errorCall "Illegal Roman Numeral: '-MMMMMMLVII'"
         evaluate (unpack (RomanNumeral "MMMMMMMMMMMMMM")) `shouldThrow` errorCall "Illegal Roman Numeral: 'MMMMMMMMMMMMMM'"
         evaluate (unpack (RomanNumeral "MMMMMMCDX")) `shouldThrow` errorCall "Illegal Roman Numeral: 'MMMMMMCDX'"
       it "cannot translate weird strings" $ do
@@ -107,14 +107,13 @@ spec = do
         ((-1) :: RomanNumeral) `shouldBe` RomanNumeral "-I"
         (0 :: RomanNumeral) `shouldBe` RomanNumeral ""
       it "is Integral: can compute quotient and remainder" $ do
-        (RomanNumeral "" `quotRem` RomanNumeral "") `shouldBe` (RomanNumeral "", RomanNumeral "")
-        (RomanNumeral "" `quotRem` RomanNumeral "") `shouldBe` (RomanNumeral "", RomanNumeral "")
-        (RomanNumeral "" `quotRem` RomanNumeral "") `shouldBe` (RomanNumeral "", RomanNumeral "")
-        (RomanNumeral "" `quotRem` RomanNumeral "") `shouldBe` (RomanNumeral "", RomanNumeral "")
+        (RomanNumeral "V" `quotRem` RomanNumeral "II") `shouldBe` (RomanNumeral "II", RomanNumeral "I")
+        (RomanNumeral "-IV" `quotRem` RomanNumeral "III") `shouldBe` (RomanNumeral "-I", RomanNumeral "-I")
+        (RomanNumeral "X" `quotRem` RomanNumeral "-III") `shouldBe` (RomanNumeral "-III", RomanNumeral "I")
       it "is Integral: has defined toInteger" $ do
         toInteger (RomanNumeral "CCLVI") `shouldBe` 256
         toInteger (RomanNumeral "") `shouldBe` 0
-        toInteger (RomanNumeral "-DCCLXXXV") `shouldBe` 785
+        toInteger (RomanNumeral "-DCCLXXXV") `shouldBe` (-785)
       it "is Integral: automatically gets `div` and `mod`" $ do
         (RomanNumeral "XVII" `div` RomanNumeral "III") `shouldBe` RomanNumeral "V"
         (RomanNumeral "V" `div` RomanNumeral "II") `shouldBe` RomanNumeral "II"
