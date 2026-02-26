@@ -3,8 +3,8 @@ version:             0.1.0.0
 github:              "MI-AFP/hw05"
 license:             MIT
 author:              "Marek Suchánek"
-maintainer:          "marek.suchanek@fit.cvut.cz"
-copyright:           "2021 Marek Suchánek"
+maintainer:          "marek.suchanek@cvut.cz"
+copyright:           "2026 Marek Suchánek"
 
 extra-source-files:
 - README.md

@@ -9,16 +9,16 @@ import Data.Maybe (fromMaybe)
 -- DO NOT HARDCODE ANY STRINGs/CHARs IN THIS MODULE!
 import qualified Data.RomanNumeral.Helpers as Helpers
 
--- | RomanNumeral type (wrapper) for English numerals
+-- | RomanNumeral type (wrapper) for Roman numerals
 newtype RomanNumeral = RomanNumeral String
                      deriving (Show, Read)
 
-   -- | Pack Integer into RomanNumeral (English numeral string)
+   -- | Pack Integer into RomanNumeral (Roman numeral string)
 pack :: (Integral a, Show a) => a -> RomanNumeral
 pack integral = RomanNumeral $ fromMaybe err (integral2RomanNumeral integral)
               where err = error $ Helpers.messageBadIntegral integral
 
--- | Unpack RomanNumeral (English numeral string) to Integer
+-- | Unpack RomanNumeral (Roman numeral string) to Integer
 unpack :: RomanNumeral -> Integer
 unpack (RomanNumeral numeral) = fromMaybe err (romanNumeral2Integral numeral)
                               where err = error $ Helpers.messageBadNumeral numeral

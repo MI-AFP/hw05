@@ -3,6 +3,7 @@ module Data.RomanNumeral.Helpers where
 import Data.Tuple (swap)
 
 -- these are to help with RomanNumerals, feel free to edit it if needed
+-- you don't have to use them at all... but you can
 
 -- see: http://www.csgnetwork.com/csgromancnv.html
 
